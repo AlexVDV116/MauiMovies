@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 
 namespace MauiMovies;
 
@@ -14,6 +15,7 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
+        builder.UseMauiApp<App>().ConfigureFonts().UseMauiCommunityToolkit();
 
 #if DEBUG
         builder.Logging.AddDebug();

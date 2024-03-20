@@ -44,7 +44,7 @@
                                              Spacing="10">
                             <VerticalStackLayout.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                      Command="{Binding ShowMovie}"
+                                                      Command="{Binding Source={x:Reference MoviePage}, Path=ShowMovie}"
                                                       CommandParameter="{Binding .}"/>
                             </VerticalStackLayout.GestureRecognizers>
 

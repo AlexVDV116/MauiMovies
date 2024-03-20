@@ -1,12 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http.Json;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Views;
 using MauiMovies.Models;
 
 namespace MauiMovies;
 
 public partial class MainPage : ContentPage
 {
+    // https://www.themoviedb.org/settings/api
     string _apiKey = "9b30d99cee6e2b6b79e2c0e24825b837";
     string _baseUri = "https://api.themoviedb.org/3/";
 
@@ -20,9 +22,9 @@ public partial class MainPage : ContentPage
 
     public ObservableCollection<MovieResult> Movies { get; set; } = new();
 
-    public ICommand ChooseGenres;
+    public ICommand ChooseGenres => new Command(async () => await ShowGenreList());
 
-    public ICommand ShowMovie;
+    public ICommand ShowMovie => new Command<MovieResult>((movie) => ShowMovieDetails(movie));
 
     public bool IsLoading { get; set; }
 
@@ -94,5 +96,34 @@ public partial class MainPage : ContentPage
 
         OnPropertyChanged(nameof(Movies));
     }
+
+    private async Task ShowGenreList()
+    {
+        var genrePopup = new GenreListPopup(_genreList);
+
+        var selected = await this.ShowPopupAsync(genrePopup);
+        if ((bool)selected)
+        {
+            Genres.Clear();
+            foreach (var genre in _genreList)
+            {
+                if (genre.Selected)
+                {
+                    Genres.Add(new Genre
+                    {
+                        name = genre.name
+                    });
+                }
+            }
+
+            LoadFilteredMovies();
+        }
+    }
     
+    private void ShowMovieDetails(MovieResult movie)
+    {
+        var moviePopup = new MovieDetailsPopup(movie, _genres.genres);
+ 
+        this.ShowPopup(moviePopup);
+    }
 }
