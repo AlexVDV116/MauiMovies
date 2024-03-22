@@ -3,75 +3,80 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Name="MoviePage"
              x:Class="MauiMovies.MainPage">
-    <VerticalStackLayout Spacing="10" Padding="30">
+    <Grid>
+        <Image Source="hollywood.jpg"
+               Aspect="AspectFill"
+               Opacity="0.4"/>
 
-        <Border Stroke="Black"
-                StrokeThickness="2"
-                StrokeShape="RoundRectangle 5">
-            <VerticalStackLayout Padding="20">
-                <VerticalStackLayout.GestureRecognizers>
-                    <TapGestureRecognizer NumberOfTapsRequired="1"
-                                          Command="{Binding ChooseGenres}"/>
-                </VerticalStackLayout.GestureRecognizers>
-                <Label Text="Genres:"/>
-                <FlexLayout BindableLayout.ItemsSource="{Binding Genres}"
+            <VerticalStackLayout Spacing="10" Padding="30">
+            <Border Stroke="Black"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 5">
+                <VerticalStackLayout Padding="20">
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                            Command="{Binding ChooseGenres}"/>
+                    </VerticalStackLayout.GestureRecognizers>
+                    <Label Text="Genres:"/>
+                    <FlexLayout BindableLayout.ItemsSource="{Binding Genres}"
+                                JustifyContent="SpaceEvenly"
+                                Wrap="Wrap">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Border Stroke="CadetBlue"
+                                        StrokeShape="RoundRectangle 15">
+                                    <Label Text="{Binding name}"
+                                           TextColor="White"
+                                           Padding="10"
+                                           BackgroundColor="CadetBlue"/>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+                </VerticalStackLayout>
+            </Border>
+                
+            <ScrollView HeightRequest="800">
+                <FlexLayout BindableLayout.ItemsSource="{Binding Movies}"
                             JustifyContent="SpaceEvenly"
+                            HeightRequest="2000"
                             Wrap="Wrap">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <Border Stroke="CadetBlue"
-                                    StrokeShape="RoundRectangle 15">
-                                <Label Text="{Binding name}"
-                                       TextColor="White"
-                                       Padding="10"
-                                       BackgroundColor="CadetBlue"/>
-                            </Border>
+                            <VerticalStackLayout WidthRequest="200"
+                                                 Margin="30"
+                                                 Spacing="10">
+                                <VerticalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                          Command="{Binding Source={x:Reference MoviePage}, Path=ShowMovie}"
+                                                          CommandParameter="{Binding .}"/>
+                                </VerticalStackLayout.GestureRecognizers>
+
+                                <Image Source="{Binding poster_path}"
+                                       Aspect="AspectFit">
+                                    <Image.Shadow>
+                                        <Shadow Brush="Black"
+                                                Opacity="0.6"
+                                                Offset="5,5"
+                                                Radius="20"/>
+                                    </Image.Shadow>
+                                </Image>
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding title}"
+                                           FontAttributes="Bold"
+                                           WidthRequest="150"
+                                           LineBreakMode="TailTruncation"/>
+                                    <Label HorizontalOptions="EndAndExpand"
+                                           HorizontalTextAlignment="End"
+                                           WidthRequest="50"
+                                           Text="{Binding vote_average, StringFormat='{0:N1} ⭐'}"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </FlexLayout>
-            </VerticalStackLayout>
-        </Border>
-        
-        <ScrollView HeightRequest="800">
-            <FlexLayout BindableLayout.ItemsSource="{Binding Movies}"
-                        JustifyContent="SpaceEvenly"
-                        HeightRequest="2000"
-                        Wrap="Wrap">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate>
-                        <VerticalStackLayout WidthRequest="200"
-                                             Margin="30"
-                                             Spacing="10">
-                            <VerticalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                      Command="{Binding Source={x:Reference MoviePage}, Path=ShowMovie}"
-                                                      CommandParameter="{Binding .}"/>
-                            </VerticalStackLayout.GestureRecognizers>
+            </ScrollView>
 
-                            <Image Source="{Binding poster_path}"
-                                   Aspect="AspectFit">
-                                <Image.Shadow>
-                                    <Shadow Brush="Black"
-                                            Opacity="0.6"
-                                            Offset="5,5"
-                                            Radius="20"/>
-                                </Image.Shadow>
-                            </Image>
-                            <HorizontalStackLayout>
-                                <Label Text="{Binding title}"
-                                       FontAttributes="Bold"
-                                       WidthRequest="150"
-                                       LineBreakMode="TailTruncation"/>
-                                <Label HorizontalOptions="EndAndExpand"
-                                       HorizontalTextAlignment="End"
-                                       WidthRequest="50"
-                                       Text="{Binding vote_average, StringFormat='{0:N1} ⭐'}"/>
-                            </HorizontalStackLayout>
-                        </VerticalStackLayout>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </FlexLayout>
-        </ScrollView>
-
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>
